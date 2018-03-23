@@ -10,17 +10,16 @@
                        </div>
                    </router-link>
                </div>
-
              <!-- 个人信息 -->
-               <div>
+              <div>
                     <div class="flexBox">
                      <div class="detail">
                       <div>
-                        <i class="icon iconfont icon-huiyuan"></i><span class="weiname" > nickname</span>
+                        <i class="icon iconfont icon-huiyuan"></i><span class="weiname" >{{m.nickname}} </span>
                       </div>
                       <div class="bottom">
-                         <i class="icon iconfont icon-yue"></i>余额: 00 元
-                         <div class="nlian iconleft"><i class="icon iconfont icon-jifen"></i>积分: 120</div>
+                         <i class="icon iconfont icon-yue"></i>余额:{{m.balance}}元
+                         <div class="nlian iconleft"><i class="icon iconfont icon-jifen"></i>积分: {{m.integral}}</div>
                      </div>
                      </div>
                    </div>
@@ -45,8 +44,9 @@
         <div class="hradius">
          </div>
          <div class="nav">
+
            <ul>
-             <li><a href=""><i class="iconfont icon-tubiao309"></i><p>兑积分</p></a></li>
+             <li><router-link  to="/integral"><i class="iconfont icon-tubiao309"></i><p>兑积分</p></router-link></li>
              <li><router-link  to="/deposit"><i class="iconfont icon-chongzhi"></i><p>充值</p></router-link></li>
              <li><a href=""><i class="iconfont icon-qianbao"></i><p>钱包</p></a></li>
              <li><router-link tag="a"  to="/ecoupons"><i class="iconfont icon-wodeqiabao0101"></i><p>电子券</p></router-link></li>

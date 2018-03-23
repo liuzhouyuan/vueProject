@@ -10,6 +10,7 @@ import carDetail from '@/components/carDetail'
 import ecoupons from '@/components/ecoupons/ecoupons'
 import ecoupdetail from '@/components/ecoupons/ecoupdetail'
 import deposit from '@/components/deposit/deposit'
+import integral from '@/components/integral/integral'
 Vue.use(Router)
 Vue.use(VueResource)
 Vue.http.options.emulateJSON = true
@@ -53,6 +54,10 @@ export default new Router({
       {
         path: '/deposit',
         component: deposit
+      },
+      {
+        path: '/integral',
+        component: integral
       } 
      
   ]

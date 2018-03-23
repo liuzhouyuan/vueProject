@@ -15,10 +15,10 @@
    <p class="sum">200:00</p>
    </div>
   <div class="content">
+
      <div class="payWay">
      <p><span>充值方式</span><span>微信支付</span></p>
-     icon-jiantou9
-
+  
      <p @click="isShow=!isShow">{{payway}}</p>
      <li v-show="isShow" v-for="item in options" @click="payway=item.label,isShow=!isShow">{{item.label}}</li>
 
@@ -41,6 +41,7 @@ export default {
     return{
       payway:'微信支付',
       showtip:true,
+      isShow:true,
       options: [{
           value: '选项1',
           label: '黄金糕'
@@ -121,23 +122,19 @@ components: {
     line-height:0.8rem       
 .content
   height:3rem
-  diaplay flex
-  color red
+  border:1px solid red
   .payWay
-    self-align:center
     width:4rem
-    align-self:center
-    margin:auto  
-.el-input
-  width:1.8rem
-.el-select .el-input__inner
-    border:none
-    color:black
-       
-.el-select .el-input__inner:focus 
-    border:none
-.el-input__inner 
-    border:none
+    border:1px solid red
+    margin:auto
+    p
+      color:#333
+      font-size:0.32rem
+      height:0.4rem
+      
+      
+
+
 
 </style>
 
