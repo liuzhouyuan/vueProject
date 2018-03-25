@@ -18,6 +18,8 @@
 
 
 <style lang="stylus" type="text/stylus">
+body,html
+  background-color:white
 body,div,ul,li,h1,h2,h3,h4,h5,h6,p,form,input
    margin:0;
    padding:0
@@ -101,6 +103,7 @@ input[type="search"]*/
    height:100%
    font-size:13px
    color: #333 
+   overflow:hidden
  .m
     margin:0.1rem
   .fontB

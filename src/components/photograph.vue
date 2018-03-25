@@ -16,6 +16,8 @@
         </div>  
       </div>
 
+     <input type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
+     <input   type="file" capture="camera" accept="image/*" ">
       <div class="Btn">
         <div class="inner">
         <button  class="choose" @click="">从相册中拍一张</button> <br>

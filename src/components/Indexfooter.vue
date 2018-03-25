@@ -1,5 +1,5 @@
 <template>
-<div class="foot">
+<div>
 <div class="wrapper">
 <ul>
     <li class="li1"><a href=""><div class="iconstyle"><i class="iconfont icon-iconfonthome0"></i></div><p>首页</p></a></li>
@@ -19,8 +19,6 @@
 </script>
 
 <style lang="stylus" type="text/stylus" scoped>
-.foot
-	margin-top:1rem
 .wrapper
 	border-top:1px solid rgba(231,227,227,0.8)
 	position:fixed
@@ -35,19 +33,21 @@
 	height:45px
 	line-height:45px
 	width:16%
-	background:#f5f5f5	
-	padding-top:2px;		
+	background:#f5f5f5
+	box-sizing:border-box
+	padding-top:0.03rem
+			
 .li2 
 	width:16%
-	padding-top:2px;;
 	height:45px
 	line-height:45px
 	background:#f5f5f5
+	box-sizing:border-box
+	padding-top:0.03rem
 	
 .li1 a,li2 a
 	font-size:0.23rem
-	color:#333	
-    
+	color:#333		
 .li3 
 	boder-right:1px solid #f5f5f5
 .li4 
@@ -66,6 +66,7 @@
 	height:0.23rem
 	line-height:28px
 	box-sizing:border-box
+	padding-top:0
 .icon-iconfonthome0
 	font-size:0.4rem
 	color:#9c9c9c

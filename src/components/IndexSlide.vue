@@ -45,6 +45,8 @@ import Swiper from 'swiper'
 
 <style lang="stylus" type="text/stylus" scoped>
 @import 'swiper/dist/css/swiper.min.css'
+    .sliders-group
+        box-shadow: 0px 7px  5px rgba(231,227,227,1)
     .swiper-container
        height:1.8rem
        width: 100%

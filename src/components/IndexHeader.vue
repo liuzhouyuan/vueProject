@@ -1,12 +1,12 @@
 <template>
   <div class="wrap">
-   <div class="header">
+   <div class="header">  
          <div class="p_infos">
               <!-- 头像 -->
                <div>
                    <router-link  to="/PersonDate">
                        <div class="Avator">
-                         <img src="../../static/images/touxiang.jpg">
+                         <img :src="this.GLOBAL.BASE_URL+m.headimgurl">
                        </div>
                    </router-link>
                </div>
@@ -66,7 +66,8 @@
    data(){
     return{
      m:[],
-     http:'http://'
+  
+
     }
   },
   created(){
@@ -108,9 +109,9 @@
     border-radius:50%
     border-buttom:2px solid #bebbb7
   .header  .p_infos > div:nth-child(1)
-      width:20%
+      width:25%
   .header .p_infos > div:nth-child(2)
-      width:60%
+      width:55%
   .header .p_infos > div:nth-child(3)
       width:20%
   .header .flexBox

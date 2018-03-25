@@ -30,7 +30,8 @@
          <!-- nav区域 -->
     <div class="hradius">
     </div>
-     <div class="nav">
+
+    <div class="nav">
            <ul>
              <li><a href=""><span>1000</span></i><p>积分</p></a></li>
              <li><a href=""><span>6000</span></i><p>已消费积分</p></a></li>
@@ -38,62 +39,82 @@
            </ul>
     </div>
    </div>
+
+
    <div class="tabnav">
 
       <ul class="tabitem">
-        <li @click="currentTabIndex=index" :class="{tabActive:currentTabIndex==index}"  v-for="(tabCon,index) in tabItem" >{{tabCon.tabCon}}</li>
-     </ul>  
+        <li @click="currentTabIndex=index"  v-for="(tabCon,index) in tabItem" ><a :class="{tabActive:currentTabIndex==index}" >{{tabCon.tabCon}}</a></li>
+     </ul>
+
    </div>
-  <div class="tabContent">
-          <transition  enter-active-class="animated bounceInLeft" leave-active-class="animated bounceInRight">
-            <div v-show="0==currentTabIndex" class="navCont1">
-                        <P class="clearfix">ghfghfghfg目前仅支持兑换天河城百货购物小屋，请上传清晰的照片</P>
-                        <div class="bottom">
+
+  <div class="tabContent  clearfix">
+          <transition-group  enter-active-class="zoomInLeft" leave-active-class="zoomOutRight">
+            <div v-show="0==currentTabIndex" class="navCont navCont1 animated" :key="1">
+                        <p>目前仅支持兑换天河城百货购物小屋，请上传清晰的照片</p>
+                        <div class="imgShow">
+                        <ul>
+                          <li><img src="../../../static/images/aiya.png"></li>
+                          <li><img src="../../../static/images/tiaoxingma.png"></li>
+                             <li><img src="../../../static/images/slide.jpg"></li>
+                          <li>rtr</li>
+                          <li>ffggfg fdgfghfgh gfhghgfhghtgh</li>
+                          <li>ffgfgfrhf hfdhjhj hjhjhj</li> 
+                        </ul>
+
+                          
+
+                        </div>
+                        <div class="bottom_part">
                           <div class="left">
-                          <div class="dotted">
-                      
+                            <div class="dotted">
+                               <input  id="file"  type="file" class="input_File" accept="image/*"  @change="getfile($event)">
+                                <div class="addIcon"><i class="icon iconfont  icon-022caozuo_jiahao"></i></div>
+                                <div class="tip"><span>添加兑换票据</span></div>
                             </div>
-                            </div>
-
-           
-
+                          </div>
                           <div class="right">
-                          djfdk 
-                            
+                             <mt-button type="primary" size="large">large</mt-button>
+    
                           </div>
                        </div>
               </div>
-         </transition>
-         <transition  enter-active-class="animated bounceInLeft" leave-active-class="animated bounceInRight">
-              <div v-show="1==currentTabIndex" class="navCont2">
+
+                        <div v-show="1==currentTabIndex" class="navCont2 " :key="2">
                         <P class="clearfix">hah目前仅支持兑换天河城百货购物小屋，请上传清晰的照片</P>
                         <div class="bottom">
                           <div class="left">
                           <div class="dotted">
-                      
-                            </div>
-                            </div>
-
-           
-
-                          <div class="right">
-                          djfdk 
                             
+                          </div>
+                            </div>
+                          <div class="right">
+                      
+
                           </div>
                        </div>
               </div>
-
-          </transition>
+         </transition-group>
+  <!--        <transition  enter-active-class="bounceInLeft" leave-active-class="animated bounceInRight">
+      
+  
+   </transition>
+   -->
+    
 </div>
+
+
 
 
 </div>
    
 </template>
 
-
 <script type="text/ecmascript-6">
 import {addClass} from '../../../static/js/dom.js'
+
+import { Toast } from 'mint-ui'
  export default {
    data(){
     return{
@@ -103,10 +124,122 @@ import {addClass} from '../../../static/js/dom.js'
       ],
      currentTabIndex:0,
      m:[],
+      imgArr:[],
+      imgNumLimit:4
     }
   },
+  components: {
+
+   },
   methods:{
+      getfile(event){
+      //let file=event.target.files[0]
+      let fileList = event.target.files;
+      let imgNum = fileList.length;
+      let _this= this
+      if(imgNum>this.imgNumLimit){
+         Toast('一次最多上传'+this.imgNumLimit+'张图片！')
+         event.target.value=""
+         return
+       }
+
+
+
+      for(let i=0;i<imgNum;i++){
+        let fileName=fileList[i].name
+        let suffix=fileName.substring(fileName.lastIndexOf(".")+1).toLowerCase()
+        if(suffix !="jpg" && suffix !="jpeg" && suffix !="png" && suffix !="git" && suffix !="bmp" && suffix !="pdf"){
+          Toast('请选择图片格式为jpg,png,git.pdf,bmp的上传')
+          event.target.value=""
+         return
+        }else{
+          let fileSize=fileList[i].size
+          let limitSize=fileSize/1024/1024
+         if(limitSize>2){
+              Toast('上传图片不能超过2M')
+              event.target.value=""
+              return
+         } else{
+
+              let reader = new FileReader();
+              reader.readAsDataURL(fileList[i]);
+              reader.onload = function() {
+               let image = new Image()
+               image.src=reader.result
+               image.onload=function(){
+                _this.imgArr.push(reader.result)
+               } 
+            }
+        }
+
+    }
+  }
+     
+
+
+     
+      //lert(this.imgNumLimit)
+
+/*
+      let fileName=event.target.value
+      let suffix=fileName.substring(fileName.lastIndexOf(".")+1).toLowerCase()
+      if(suffix !="jpg" && suffix !="jpeg" && suffix !="png" && suffix !="git" && suffix !="bmp" && suffix !="pdf"){
+         Toast('请选择图片格式为jpg,png,git.pdf,bmp的上传')
+      }
+      let fileSize=file.size
+      let limitSize=fileSize/1024/1024
+      if(limitSize>2){
+        Toast('上传文件不能超过2M')
+        event.target.value=""
+        return
+      }*/
+
+     /* let _this=this
+     
+       let imgsrc=event.target.value
+
+       let reader = new FileReader()
+       reader.readAsDataURL(event.target.files[0])
+       reader.onload=function(){
+       let image = new Image()
+       image.src=reader.result
+     
+       image.onload = function(){
       
+  
+       let canvas = document.getElementById("cvs")
+       let cxt = canvas.getContext('2d');
+       cxt.drawImage(this, 0, 0, 100, 100);
+       alert(canvas.toDataURL("image/jpeg", 0.8))
+
+         }*/
+/*
+        _this.imgurl=reader.result
+
+       
+        image.complete = function(){
+           
+
+
+       }*/
+       
+
+     /*  var image = new Image();
+
+       image.src=event.target.value
+        this.imgurl=image.src
+        alert(image.src)*/
+     /* 
+         reader.readAsDataURL(flieimg)
+  
+*/
+ console.log(_this.imgArr)
+       },
+        getfile1(event){
+        let reader = new FileReader()
+        reader.readAsDataURL(event.target.files[0])
+
+       }
 
   },
   created(){
@@ -123,31 +256,125 @@ import {addClass} from '../../../static/js/dom.js'
 
 
 <style lang="stylus" type="text/stylus" scoped>
-  /*导航一*/
+  /*中部导航一*/
   .tabnav
     width:6.4rem
-    height:0.55rem
+    height:0.8rem
     border-bottom:1px solid rgba(231,227,227,0.5)  
     ul
-      width 90%
+      width:90%
       margin:auto
-      margin:0
-      padding:0
       li
           float:left
           width:35%
           text-align:center
-          font-size:0.25rem
-          height:0.55rem
-          line-height:0.65rem
+          font-size:0.28rem
+          height:0.8rem
+          a
+            padding-top:0.25rem
+            display:inline-block
+            height:0.8rem
+            box-sizing:border-box
+            transition:border-bottom 0.3s linear
       .tabActive
-        color:red
-  .tabContent,.tabContent1,.tabContent2
-      height:0.5rem
-  .tabContent
+        color:#0095D9
+        border-bottom:0.08rem solid #0095D9
+ .tabContent
+    p
+      color:#B7B8BB
+      height:0.85rem
+      line-height:0.85rem
+      font-size:0.24rem
+      text-indent:0.2rem
+    .imgShow
+       ul
+          width:90%
+          margin:auto
+          letter-spacing: -8px
+          li
+            width:33%
+            text-align:center
+            font-size:0.28rem
+            padding: 0 0.05rem
+            box-sizing:border-box
+            display:inline-block
+            letter-spacing: normal
+            margin-bottom:10px
+            img
+              max-width:100%
+              height:auto
+              font-size:0
+              display:block
+   
+   .navCont  .bottom_part
+     display:flex
+     height:1.5rem
+     width:6.4rem
+    .navCont .bottom_part >div
+       align-self:center
+       text-align:center
         
-        overflow:hidden
-        border:1px solid red
+    .left
+       width:40%
+       .dotted 
+         width:1.3rem
+         height:1.3rem
+         border:1px dashed #B0B1B5
+         margin:auto
+         position:relative
+            
+        .input_File
+            color:red
+            width:0.7rem
+            height:0.7rem
+            background:red
+            position: absolute
+            box-sizing:content-box
+            opacity:0
+            z-index:10
+            top:0
+            left:0
+            right:0
+            bottom:0
+            margin:auto
+        .addIcon
+            width:0.7rem
+            height:0.7rem
+            position: absolute
+            top:0
+            left:0
+            right:0
+            bottom:0
+            margin:auto
+            line-height:0.7rem
+            height:0.7rem
+            text-align:center
+        .icon-022caozuo_jiahao
+          font-size:0.6rem
+          color:#BCBDC0
+         .tip
+           color:#999
+           position: absolute
+           bottom:0
+           span
+              text-align:center
+              display:block
+              font-size:0.2rem
+              width:1.3rem
+              text-overflow:clip
+              word-wrap:nowrap
+              overflow:hidden
+              word-break:keep-all
+     
+             
+    .right
+       width:60%
+
+
+
+            
+
+
  /* 头部 */
 .header
   background:#fec65e
@@ -172,10 +399,9 @@ import {addClass} from '../../../static/js/dom.js'
   border-buttom:2px solid #bebbb7
 .p_infos > div:nth-child(1)
     width:20%
+    padding-left:0.45rem
 .p_infos > div:nth-child(2)
-    width:60%
-.p_infos > div:nth-child(3)
-    width:20%
+    width:70%
 .flexBox
    display: flex
    height:100% 
@@ -246,31 +472,39 @@ import {addClass} from '../../../static/js/dom.js'
    color:#f58323
    font-size:0.4rem     
 .nav li p
-   font-size:0.23rem
+   font-size:0.25rem
    color:#333
-   height:0.4rem
-   line-height:0.4rem
+   height:0.5rem
+   line-height:0.5rem
   .icon-shangcheng
     color:#e72428
     font-size:0.45rem
-.navCont .bottom
- display:flex
- height:1.5rem
- width:6.4rem
-.navCont .bottom >div
-   align-self:center
-   text-align:center 
-.left
-   width:45%
-.right
-   width:55%
-   border:1px solid red
+@media only screen and (max-width:360px)
+      .navCont  .icon-022caozuo_jiahao
+          font-size:0.6rem
+      .navCont  .tip
+           font-size:12px
+
    
 </style>
 
 <style lang="stylus" type="text/stylus">
+.mint-toast 
+    background: rgba(62, 172, 216, 0.5)
+.mint-button--primary 
+    color: #fff
+    background-color: #C8C9CB
+    box-shadow: 0px 6px  9px rgba(231,227,227,0.9) 
+    display: block
+    width: 75%
+    height:0.85rem
+    margin-left:0.18rem
+    
+.mint-button::after 
+    background-color:#E0E2E7
 
- 
+</style>
+<style type="text/css">
 
 
 </style>

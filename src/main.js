@@ -1,14 +1,14 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import 'babel-polyfill'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import global_ from '@/components/global.vue'
+Vue.prototype.GLOBAL = global_
 import fastclick from 'fastclick'
 import '../static/font/iconfont.css'
-//import 'mint-ui/lib/style.min.css'
-//import mintui from 'mint-ui'
-//Vue.use(mintui)
+import 'mint-ui/lib/style.min.css'
+import mintui from 'mint-ui'
+Vue.use(mintui)
 //import '../static/css/mui.css'
 //import mui from  '../static/js/mui.min.js'
 import Swiper from 'swiper'
