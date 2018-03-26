@@ -6,7 +6,7 @@
                <div>
                    <router-link  to="/PersonDate">
                        <div class="Avator">
-                         <img :src="this.GLOBAL.BASE_URL+m.headimgurl">
+                         <img :src="this.GLOBAL.BASE_URL+personDate.headimgurl"> 
                        </div>
                    </router-link>
                </div>
@@ -15,11 +15,11 @@
                     <div class="flexBox">
                      <div class="detail">
                       <div>
-                        <i class="icon iconfont icon-huiyuan"></i><span class="weiname" >{{m.nickname}} </span>
+                        <i class="icon iconfont icon-huiyuan"></i><span class="weiname" >{{personDate.nickname}} </span>
                       </div>
                       <div class="bottom">
-                         <i class="icon iconfont icon-yue"></i>余额:{{m.balance}}元
-                         <div class="nlian iconleft"><i class="icon iconfont icon-jifen"></i>积分: {{m.integral}}</div>
+                         <i class="icon iconfont icon-yue"></i>余额:{{personDate.balance}}元
+                         <div class="nlian iconleft"><i class="icon iconfont icon-jifen"></i>积分: {{personDate.integral}}</div>
                      </div>
                      </div>
                    </div>
@@ -62,21 +62,24 @@
 
 
 <script type="text/ecmascript-6">
+import { Toast } from 'mint-ui'
  export default {
    data(){
     return{
-     m:[],
-  
-
+     personDate:[],
     }
   },
   created(){
     this.$http.get('http://yueya.aghorn.top/api/Information/index').then(function(res){
-      this.m = res.body.data
-      console.log(this.m)
+      if(!res.body.errorCode){
+        this.personDate=res.body.data
+      }else{
+        Toast('数据请求错误')
+      }
+
     })
 
-}
+},
 
 }
  

@@ -40,72 +40,84 @@
     </div>
    </div>
 
-
+  <div class="content">
    <div class="tabnav">
 
       <ul class="tabitem">
-        <li @click="currentTabIndex=index"  v-for="(tabCon,index) in tabItem" ><a :class="{tabActive:currentTabIndex==index}" >{{tabCon.tabCon}}</a></li>
+        <li @click="currentTop_tab=index"  v-for="(Item,index) in Top_tab" ><a :class="{tabActive: currentTop_tab==index}" >{{Item.tabItem}}</a></li>
      </ul>
 
    </div>
 
-  <div class="tabContent  clearfix">
-          <transition-group  enter-active-class="zoomInLeft" leave-active-class="zoomOutRight">
-            <div v-show="0==currentTabIndex" class="navCont navCont1 animated" :key="1">
+  <div class="Top_tabCon">
+
+          <div v-show="0== currentTop_tab" class="navCont navCont1 animated">
+
                         <p>目前仅支持兑换天河城百货购物小屋，请上传清晰的照片</p>
-                        <div class="imgShow">
+                        <div v-if="imgArr.length>0" class="imgShow">
                         <ul>
-                          <li><img src="../../../static/images/aiya.png"></li>
-                          <li><img src="../../../static/images/tiaoxingma.png"></li>
-                             <li><img src="../../../static/images/slide.jpg"></li>
-                          <li>rtr</li>
-                          <li>ffggfg fdgfghfgh gfhghgfhghtgh</li>
-                          <li>ffgfgfrhf hfdhjhj hjhjhj</li> 
+                          <li v-for="(item,index) in imgArr" ><img :src="item"><i @click="delImg($event,index)"  class="icon iconfont  icon-shanchu animated"></i></li>
+                         
+                      
                         </ul>
-
-                          
-
                         </div>
                         <div class="bottom_part">
                           <div class="left">
                             <div class="dotted">
-                               <input  id="file"  type="file" class="input_File" accept="image/*"  @change="getfile($event)">
+                               <input  id="file"  type="file" class="input_File"  accept="image/*"  @change="getfile($event)">
                                 <div class="addIcon"><i class="icon iconfont  icon-022caozuo_jiahao"></i></div>
                                 <div class="tip"><span>添加兑换票据</span></div>
                             </div>
                           </div>
                           <div class="right">
-                             <mt-button type="primary" size="large">large</mt-button>
-    
-                          </div>
-                       </div>
-              </div>
-
-                        <div v-show="1==currentTabIndex" class="navCont2 " :key="2">
-                        <P class="clearfix">hah目前仅支持兑换天河城百货购物小屋，请上传清晰的照片</P>
-                        <div class="bottom">
-                          <div class="left">
-                          <div class="dotted">
-                            
-                          </div>
-                            </div>
-                          <div class="right">
-                      
+                             <mt-button type="primary" size="large">兑积分</mt-button>
 
                           </div>
                        </div>
-              </div>
-         </transition-group>
-  <!--        <transition  enter-active-class="bounceInLeft" leave-active-class="animated bounceInRight">
-      
-  
-   </transition>
-   -->
-    
+          </div>
+
+
+          <div v-show="1== currentTop_tab" class="navCont2" >
+               <input v-model="watchword" type="text" placeholder="请输入积分兑换券上的兑换口令" >
+               <div class="watchWord_Btn">
+                   <mt-button type="primary" size="large">兑积分</mt-button>
+               </div>    
+          </div>  
+</div>
+
+  <div class="tabnav">
+        <ul class="tabitem">
+          <li @click="currentBottom_tab=index"   v-for="(Item,index) in Bottom_tab" ><a :class="{tabActive:currentBottom_tab==index}" >{{Item.tabItem}}</a></li>
+       </ul>
+  </div>
+
+<div class="Bottom_tabCon">
+  <ul class="history_list">
+     <li>
+       <span>2018-01-12</span>
+       <span>兑换积分500</span>
+       <span>审核中</span>
+     </li>
+     <li>
+       <span>2018-01-12</span>
+       <span>兑换积分500</span>
+       <span>审核中</span>
+     </li>
+        <li></li>
+
+  </ul>
+
 </div>
 
 
 
+
+</div>
+
+</div>
+
+
+                  
 
 </div>
    
@@ -118,20 +130,37 @@ import { Toast } from 'mint-ui'
  export default {
    data(){
     return{
-      tabItem:[
-          {tabCon:"票据兑积分"},
-          {tabCon:"口令兑积分"}
+    Top_tab:[
+          {tabItem:"票据兑积分"},
+          {tabItem:"口令兑积分"}
       ],
-     currentTabIndex:0,
-     m:[],
-      imgArr:[],
-      imgNumLimit:4
+    Bottom_tab:[
+          {tabItem:"兑换记录"},
+          {tabItem:"消费记录"}
+    ],
+    currentTop_tab:0,
+    currentBottom_tab:0,
+    m:[],
+    imgArr:[],
+    imgNumLimit:4,
+    fileDate:[],
+    watchword:""
     }
+  },
+  mounted(){
+    console.log(this.imgArr),
+    console.log(this.fileDate)
   },
   components: {
 
    },
   methods:{
+    delImg(e,index){
+      this.imgArr.splice(index,1)
+     
+
+    },
+
       getfile(event){
       //let file=event.target.files[0]
       let fileList = event.target.files;
@@ -160,7 +189,9 @@ import { Toast } from 'mint-ui'
               event.target.value=""
               return
          } else{
-
+              _this.fileDate.push(fileList[i])
+            /*   console.log(fileList[i])
+                alert(fileList[i].name)*/
               let reader = new FileReader();
               reader.readAsDataURL(fileList[i]);
               reader.onload = function() {
@@ -174,67 +205,7 @@ import { Toast } from 'mint-ui'
 
     }
   }
-     
-
-
-     
-      //lert(this.imgNumLimit)
-
-/*
-      let fileName=event.target.value
-      let suffix=fileName.substring(fileName.lastIndexOf(".")+1).toLowerCase()
-      if(suffix !="jpg" && suffix !="jpeg" && suffix !="png" && suffix !="git" && suffix !="bmp" && suffix !="pdf"){
-         Toast('请选择图片格式为jpg,png,git.pdf,bmp的上传')
-      }
-      let fileSize=file.size
-      let limitSize=fileSize/1024/1024
-      if(limitSize>2){
-        Toast('上传文件不能超过2M')
-        event.target.value=""
-        return
-      }*/
-
-     /* let _this=this
-     
-       let imgsrc=event.target.value
-
-       let reader = new FileReader()
-       reader.readAsDataURL(event.target.files[0])
-       reader.onload=function(){
-       let image = new Image()
-       image.src=reader.result
-     
-       image.onload = function(){
-      
-  
-       let canvas = document.getElementById("cvs")
-       let cxt = canvas.getContext('2d');
-       cxt.drawImage(this, 0, 0, 100, 100);
-       alert(canvas.toDataURL("image/jpeg", 0.8))
-
-         }*/
-/*
-        _this.imgurl=reader.result
-
-       
-        image.complete = function(){
-           
-
-
-       }*/
-       
-
-     /*  var image = new Image();
-
-       image.src=event.target.value
-        this.imgurl=image.src
-        alert(image.src)*/
-     /* 
-         reader.readAsDataURL(flieimg)
-  
-*/
- console.log(_this.imgArr)
-       },
+},
         getfile1(event){
         let reader = new FileReader()
         reader.readAsDataURL(event.target.files[0])
@@ -245,7 +216,7 @@ import { Toast } from 'mint-ui'
   created(){
     this.$http.get('http://yueya.aghorn.top/api/Information/index').then(function(res){
       this.m = res.body.data
-      console.log(this.m)
+      //console.log(this.m)
     })
 
 }
@@ -256,34 +227,72 @@ import { Toast } from 'mint-ui'
 
 
 <style lang="stylus" type="text/stylus" scoped>
+
+  /*底部部分*/
+.Bottom_tabCon 
+  margin:10px 0   
+  .history_list
+     width:85%
+     margin:auto
+     margin-top:0.1rem
+     li
+       height:0.65rem
+       border-bottom:1px dashed #999
+       display:inline-block
+       width:100%
+       letter-spacing:-8px
+       position:relative
+       span
+         position:absolute
+         bottom:0
+         font-size:0.26rem
+         letter-spacing: normal
+         color:#999
+     li > span:nth-child(1)
+       left:0
+     li > span:nth-child(2)
+       left:35%
+     li > span:nth-child(3)
+       right:0
+
+    
+     
+  
+  
+
   /*中部导航一*/
-  .tabnav
+.Top_tabCon
+  padding-bottom:1rem
+  box-shadow: 0px 5px  14px rgba(231,227,227,0.5) 
+.tabnav
     width:6.4rem
-    height:0.8rem
+    height:0.85rem
     border-bottom:1px solid rgba(231,227,227,0.5)  
     ul
       width:90%
       margin:auto
+      letter-spacing: -8px
       li
-          float:left
           width:35%
+          letter-spacing: normal
           text-align:center
           font-size:0.28rem
+          display:inline-block
           height:0.8rem
           a
-            padding-top:0.25rem
+            padding-top:0.28rem
             display:inline-block
-            height:0.8rem
+            height:0.85rem
             box-sizing:border-box
             transition:border-bottom 0.3s linear
       .tabActive
         color:#0095D9
         border-bottom:0.08rem solid #0095D9
- .tabContent
+ .navCont1
     p
       color:#B7B8BB
-      height:0.85rem
-      line-height:0.85rem
+      height:1rem
+      line-height:1rem
       font-size:0.24rem
       text-indent:0.2rem
     .imgShow
@@ -300,15 +309,46 @@ import { Toast } from 'mint-ui'
             display:inline-block
             letter-spacing: normal
             margin-bottom:10px
+            position:relative
+            i
+              position:absolute
+              bottom:0
+              right:0
+              padding:0.1rem 0.05rem 0 0.2rem
+              display:inline-block
+              box-sizing:border-box
+            .icon-shanchu
+                color:#E0E2E7
+                font-size:0.23rem
+         
             img
               max-width:100%
               height:auto
               font-size:0
               display:block
+   .navCont2
+     width:6.4rem
+     input
+       width:90%
+       margin:0.4rem auto
+       display:block
+       height:1rem
+       border:1px solid rgba(231,227,227,0.6) 
+       text-indent 0.25rem
+       border-radius:0.1rem
+     input:focus
+       outline:none
+       box-shadow: 0px 3px  4px rgba(231,227,227,0.6)
+    ::-webkit-input-placeholder
+       color:#999
+       font-sie:0.25rem
+     .watchWord_Btn
+       margin:auto
+       width:60%
    
    .navCont  .bottom_part
      display:flex
-     height:1.5rem
+     height:1.6rem
      width:6.4rem
     .navCont .bottom_part >div
        align-self:center
@@ -370,9 +410,6 @@ import { Toast } from 'mint-ui'
     .right
        width:60%
 
-
-
-            
 
 
  /* 头部 */
@@ -479,6 +516,7 @@ import { Toast } from 'mint-ui'
   .icon-shangcheng
     color:#e72428
     font-size:0.45rem
+
 @media only screen and (max-width:360px)
       .navCont  .icon-022caozuo_jiahao
           font-size:0.6rem
@@ -491,6 +529,8 @@ import { Toast } from 'mint-ui'
 <style lang="stylus" type="text/stylus">
 .mint-toast 
     background: rgba(62, 172, 216, 0.5)
+.watchWord_Btn .mint-button--primary
+  margin:auto
 .mint-button--primary 
     color: #fff
     background-color: #C8C9CB
@@ -498,8 +538,7 @@ import { Toast } from 'mint-ui'
     display: block
     width: 75%
     height:0.85rem
-    margin-left:0.18rem
-    
+    margin-left:0.18rem   
 .mint-button::after 
     background-color:#E0E2E7
 

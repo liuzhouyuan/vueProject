@@ -18,8 +18,8 @@ import Swiper from 'swiper'
 
 //Vue.use(mui)
 //Vue.use(ElementUI)
-import animate from 'animate.css'
-Vue.use(animate)
+//import animate from 'animate.css'
+//Vue.use(animate)
 Vue.config.productionTip = false
 fastclick.attach(document.body)
 
