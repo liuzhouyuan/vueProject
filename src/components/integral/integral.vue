@@ -7,7 +7,7 @@
                <div>
                    <router-link  to="/PersonDate">
                        <div class="Avator">
-                         <img src="../../../static/images/touxiang.jpg">
+                         <img :src="this.GLOBAL.BASE_URL+personDate.headimgurl"> 
                        </div>
                    </router-link>
                </div>
@@ -16,11 +16,11 @@
                     <div class="flexBox">
                      <div class="detail">
                       <div>
-                        <i class="icon iconfont icon-huiyuan"></i><span class="weiname" >{{m.nickname}} </span>
+                        <i class="icon iconfont icon-huiyuan"></i><span class="weiname" >{{personDate.nickname}} </span>
                       </div>
                       <div class="bottom">
-                         <i class="icon iconfont icon-yue"></i>余额:{{m.balance}}元
-                         <div class="nlian iconleft"><i class="icon iconfont icon-jifen"></i>积分: {{m.integral}}</div>
+                         <i class="icon iconfont icon-yue"></i>余额:{{personDate.balance}}元
+                         <div class="nlian iconleft"><i class="icon iconfont icon-jifen"></i>积分: {{personDate.integral}}</div>
                      </div>
                      </div>
                    </div>
@@ -93,19 +93,23 @@
 
 <div class="Bottom_tabCon">
   <ul class="history_list">
-     <li>
-       <span>2018-01-12</span>
-       <span>兑换积分500</span>
-       <span>审核中</span>
+     <li v-for="(item,index) in record"  v-if="index <= limit_num">
+       <span>{{item.convert_time}}</span>
+       <span>兑换积分{{item.score}}</span>
+       <span  :class="{redfont:item.status=='审核中', yellowfont:item.status=='成功'}">{{item.status}}</span>
      </li>
-     <li>
-       <span>2018-01-12</span>
-       <span>兑换积分500</span>
-       <span>审核中</span>
-     </li>
-        <li></li>
-
+    
   </ul>
+    <p v-show="limit_num!==record.length">
+        查看更多消费记录
+      <i @click="limit_num=record.length" class="icon iconfont  icon-jiantou9"></i>
+    </p>
+
+   <p v-show="limit_num==record.length">
+      折叠消费记录
+     
+    <i  @click="limit_num=fixed_limit_num" class="icon iconfont  icon-xiangshang_jiantou"></i>
+   </p> 
 
 </div>
 
@@ -140,11 +144,15 @@ import { Toast } from 'mint-ui'
     ],
     currentTop_tab:0,
     currentBottom_tab:0,
-    m:[],
+    personDate:[],
     imgArr:[],
     imgNumLimit:4,
     fileDate:[],
-    watchword:""
+    watchword:"",
+    limit_num:2,
+    fixed_limit_num:2,
+
+    record:[]
     }
   },
   mounted(){
@@ -214,12 +222,26 @@ import { Toast } from 'mint-ui'
 
   },
   created(){
-    this.$http.get('http://yueya.aghorn.top/api/Information/index').then(function(res){
-      this.m = res.body.data
-      //console.log(this.m)
-    })
 
-}
+   this.$http.get('http://yueya.aghorn.top/api/Information/index').then(function(res){
+      if(!res.body.errorCode){
+        this.personDate=res.body.data
+      }else{
+        Toast('数据请求错误')
+      }
+
+    });
+   this.$http.get('http://yueya.aghorn.top/api/Convert/convert_record').then(function(res){
+      if(!res.body.errorCode){
+        this.record=res.body.data
+
+      }else{
+        Toast('数据请求错误')
+      }
+
+    });
+
+},
 
 }
  
@@ -245,7 +267,7 @@ import { Toast } from 'mint-ui'
        span
          position:absolute
          bottom:0
-         font-size:0.26rem
+         font-size:0.25rem
          letter-spacing: normal
          color:#999
      li > span:nth-child(1)
@@ -254,10 +276,19 @@ import { Toast } from 'mint-ui'
        left:35%
      li > span:nth-child(3)
        right:0
-
+    p
+     text-align:center
+     height:0.7rem
+     line-height:0.7rem
+     color:#666
+     font-size:0.28rem
+     .iconfont 
+       padding:0 0.15rem
+    .redfont
+      color:#EE1C22!important
+    .yellowfont
+      color:#F58222!important
     
-     
-  
   
 
   /*中部导航一*/
